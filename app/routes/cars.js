@@ -23,6 +23,6 @@ let cars = [
 
 export default Route.extend({
     model: function() {
-        return cars
+        return this.store.findAll('car')
     }
 });
