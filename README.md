@@ -7,45 +7,44 @@
 * `npm install`
 
 ## Notes
-
-- Create a new model (which will be generated in the 'models' directory):
-`ember g model car`
-- Keep model names singular
-- Create a controller (which will create cars.js in the controllers directory):
-`ember g controller cars`
-- Remember, we use controllers for events, or actions
-- We're going to use the default Rest Adapter
-- Create an 'adapters' folder in the 'app' directory
-- Create 'application.js' (application adaptor) in the 'adapter' folder
-- In application.js:
+- Notice that instead of making use of DS for this branch, model is making use of an array located in /routes/cars.js
+- Create a new route, which will be inside the existing 'cars' route:
+`ember g route cars/new`
+- Create a new controller:
+`ember g controller cars/new`
+- Add some content in new.hbs template
+- Use `{{outlet}}` on the main cars.js template to also display the new.hbs template
+- In cars.hbs template (above the `{{outlet}}`):
 ```
-import DS from 'ember-data'
-
-export default DS.RESTAdapter.extend({
-    host: "cars.json?jsonp=?",
-    shouldReloadAll(){return true} // return false if no records at all
-})
+{{#link-to 'cars.new'}}Create Car{{/link-to}}
+<hr>
 ```
-- In /models/car.js:
+- Change new.hbs template:
 ```
-import Model from '@ember-data/model';
-
-import DS from 'ember-data'
-let attr = DS.attr
-
-// defining the fields we want
-export default Model.extend({
-    make: attr('string'),
-    model: attr('string'),
-    year: attr('string')
-});
+<form {{action 'addCar' on='submit'}}>
+    <!--make use of input helpers-->
+    <p>Make: {{input type='text' value=carMake}}</p>
+    <p>Model: {{input type='text' value=carModel}}</p>
+    <p>Year: {{input type='text' value=carYear}}</p>
+    <p>{{input type='submit' value='Submit'}}</p>
+</form>
 ```
-- In /routes/cars.js:
+- In /controllers/cars/new.js controller:
 ```
-export default Route.extend({
-    model: function() {
-        return this.store.findAll('car')
+export default Controller.extend({
+    actions: {
+        addCar: function() {
+            let self = this
+            let newCar = this.store.createRecord('car', {
+                make: this.get('carMake'),
+                model: this.get('carModel'),
+                year: this.get('carYear')
+            })
+            // save to a database, if we had one
+            newCar.save()
+            // redirect to 'cars' route
+            self.transitionToRoute('cars')
+        }
     }
 });
 ```
-

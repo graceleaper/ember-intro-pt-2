@@ -1,0 +1,8 @@
+
+<form {{action 'addCar' on='submit'}}>
+    <!--make use of input helpers-->
+    <p>Make: {{input type='text' value=carMake}}</p>
+    <p>Model: {{input type='text' value=carModel}}</p>
+    <p>Year: {{input type='text' value=carYear}}</p>
+    <p>{{input type='submit' value='Submit'}}</p>
+</form>

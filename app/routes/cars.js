@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 
-/*
 let cars = [
     {
         "id": 1,
@@ -21,10 +20,10 @@ let cars = [
         "year": "2002"
     }
 ]
-*/
 
 export default Route.extend({
     model: function() {
-        return this.store.findAll('car') // getting name of model, which we set as 'car' (singular!)
+        // return this.store.findAll('car') // getting name of model, which we set as 'car' (singular!)
+        return cars
     }
 });
